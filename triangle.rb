@@ -15,7 +15,12 @@
 #
 def triangle(a, b, c)
   # WRITE THIS CODE
-  case [a, b, c].uniq.count
+  sides = [a, b, c].sort
+
+  raise TriangleError if sides.min <= 0
+  raise TriangleError if sides[0, 2].reduce(:+) <= sides.max
+
+  case sides.uniq.count
     when 1 then :equilateral
     when 2 then :isosceles
     else :scalene
