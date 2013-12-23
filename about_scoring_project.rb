@@ -31,6 +31,25 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 
 def score(dice)
   # You need to write this method
+  prepare_dice(dice).inject(0) do |score, roll|
+    score += roll.first == 1 ? 1000 : (roll.first * 100) if roll.last >= 3
+
+    if (not_in_a_set = roll.last % 3) > 0
+      case roll.first
+      when 5 then score += 50 * not_in_a_set
+      when 1 then score += 100 * not_in_a_set
+      end
+    end
+
+    score
+  end
+end
+
+def prepare_dice dice
+  dice.inject(Hash.new 0) do |result, roll|
+    result[roll] += 1
+    result
+  end
 end
 
 class AboutScoringProject < Neo::Koan
